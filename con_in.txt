@@ -1,0 +1,148 @@
+let g:python3_host_prog = '/usr/bin/python'
+set encoding=utf-8
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+colorscheme torte
+set hidden
+"use it to display background imaages
+hi normal guibg=000000
+" augroup for unmanagable stuff
+augroup unmanagable_stuff
+        autocmd!
+        inoremap jk <esc>
+        " au FileType python setlocal formatprg=autopep8\ -
+        let g:python_highlight_all = 1
+        set pyxversion=3
+        set clipboard=unnamed
+        filetype plugin on
+        set completeopt=menuone,noselect
+        " set fileformat=unix
+        set relativenumber
+        filetype indent on
+        syntax on
+        set termguicolors
+        set cursorline
+        "hi CursorLine cterm=bold  guibg=#9ec0c0 guifg=#4e4642
+        " hi Pmenu guibg=black guifg=white
+        " hi Normal guibg=NONE ctermbg=NONE
+        "hi Folded guibg= #7d4e5e guifg=#24222e
+        " hi PmenuThumb guibg=green
+        " hi Number guibg=red
+        " hi PmenuSel ctermfg=242 guibg=green
+
+        let mapleader=","
+        let maplocalleader="\/"
+        set autoindent
+
+        "filetype
+
+        "Fix cursor replacement after closing nvim
+        " set guicursor=
+        "Shift + Tab does inverse tab
+        inoremap <S-Tab> <C-d>
+augroup END
+
+augroup show_suggestion
+	autocmd!
+	inoremap <c-j> <c-n>
+	inoremap <c-k> <c-p>
+augroup END
+
+"edit and source vimrc
+augroup edit_source
+        autocmd!
+        nnoremap <leader>ev :tabedit $MYVIMRC<cr>
+        nnoremap <leader>sv :source $MYVIMRC<cr>
+augroup END
+
+call plug#begin('~/.vim/plugged')
+	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'preservim/nerdcommenter'
+	Plug 'tpope/vim-fugitive' " Git wrapper
+	Plug 'preservim/tagbar'
+	Plug 'tpope/vim-surround'
+	Plug 'akinsho/toggleterm.nvim'
+	Plug 'mattn/emmet-vim'
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+
+
+augroup telescope
+	autocmd!
+	nnoremap <leader>ff <cmd>Telescope find_files<cr>
+	nnoremap <leader>gg <cmd>Telescope live_grep<cr>
+	nnoremap <leader>fb <cmd>Telescope buffers<cr>
+	nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+	nnoremap <leader>fg <cmd>Telescope git_files<cr>
+augroup END
+
+
+augroup nerdcommenter
+	" Create default mappings
+	let g:NERDCreateDefaultMappings = 1
+
+	" Add spaces after comment delimiters by default
+	let g:NERDSpaceDelims = 1
+
+	" Use compact syntax for prettified multi-line comments
+	let g:NERDCompactSexyComs = 1
+
+	" Align line-wise comment delimiters flush left instead of following code indentation
+	let g:NERDDefaultAlign = 'left'
+
+	" Set a language to use its alternate delimiters by default
+	let g:NERDAltDelims_java = 1
+
+	" Add your own custom formats or override the defaults
+	let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+	" Allow commenting and inverting empty lines (useful when commenting a region)
+	let g:NERDCommentEmptyLines = 1
+
+	" Enable trimming of trailing whitespace when uncommenting
+	let g:NERDTrimTrailingWhitespace = 1
+
+	" Enable NERDCommenterToggle to check all selected lines is commented or not 
+	let g:NERDToggleCheckAllLines = 1
+augroup END
+
+" tagbar
+nnoremap <silent> <C-l> :TagbarToggle<CR>
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+
+
+" Formatting selected code.
+nnoremap <leader>b  <Plug>(coc-format-selected)
+
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
